@@ -2,8 +2,6 @@
 
 Projeto de estudo sobre autenticação e autorização baseada em tokens JWT, implementado com **ASP.NET Core MVC** (.NET 8), **Views Razor**, **EF Core** e **RBAC**.
 
-Documentação complementar: [`DEMONSTRACAO.md`](DEMONSTRACAO.md) (guia do código para apresentação)
-
 ## Objetivo
 
 Demonstrar o fluxo completo de autenticação JWT no navegador:
