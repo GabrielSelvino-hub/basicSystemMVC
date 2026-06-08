@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddSwaggerDocumentation();
 
 var jwtSettings = builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
     ?? throw new InvalidOperationException("Configuração JWT não encontrada.");
@@ -37,12 +38,23 @@ builder.Services
         {
             OnMessageReceived = context =>
             {
+                var authHeader = context.Request.Headers.Authorization.FirstOrDefault();
+                if (!string.IsNullOrEmpty(authHeader) &&
+                    authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Token = authHeader["Bearer ".Length..].Trim();
+                    return Task.CompletedTask;
+                }
+
                 context.Token = context.HttpContext.Items[AuthCookieHelper.AccessToken] as string
                     ?? context.Request.Cookies[AuthCookieHelper.AccessToken];
                 return Task.CompletedTask;
             },
             OnChallenge = context =>
             {
+                if (context.Request.Path.StartsWithSegments("/api"))
+                    return Task.CompletedTask;
+
                 context.HandleResponse();
                 context.Response.Redirect("/Account/Login?returnUrl=" + Uri.EscapeDataString(context.Request.Path));
                 return Task.CompletedTask;
@@ -72,6 +84,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSwaggerDocumentation();
 app.UseRouting();
 app.UseMiddleware<JwtRefreshMiddleware>();
 app.UseAuthentication();
@@ -79,6 +92,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
+
+app.MapControllers();
 
 app.Run();

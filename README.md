@@ -74,7 +74,7 @@ O banco é criado automaticamente na primeira execução (`EnsureCreated`), com 
 
 | Rota | Controller | Auth | Descrição |
 |------|------------|------|-----------|
-| `/` | `Home/Index` | Público | Página inicial |
+| `/` | `Account/Login` | Público | Tela de login (rota padrão) |
 | `/Account/Login` | `Account/Login` | Público | Formulário de login |
 | `/Account/Logout` | `Account/Logout` POST | Autenticado | Encerra sessão |
 | `/Protegido` | `Protegido/Index` | `[Authorize]` | Área autenticada |
@@ -82,7 +82,7 @@ O banco é criado automaticamente na primeira execução (`EnsureCreated`), com 
 
 ## Fluxo de teste no navegador
 
-1. Acesse `/` e clique em **Fazer login**
+1. Acesse `/` — abre direto a tela de login
 2. Entre com `admin` / `admin123` → redireciona para `/Protegido`
 3. Acesse `/Admin` → painel admin visível
 4. Faça logout, entre com `user` / `user123`
@@ -96,7 +96,35 @@ O banco é criado automaticamente na primeira execução (`EnsureCreated`), com 
 | `access_token` | JWT de curta duração (15 min) |
 | `refresh_token` | Token opaco para renovar sessão (7 dias) |
 
-O middleware `JwtBearer` lê o JWT do cookie. O `JwtRefreshMiddleware` renova tokens expirados automaticamente.
+O middleware `JwtBearer` lê o JWT do cookie ou do header `Authorization: Bearer`. O `JwtRefreshMiddleware` renova tokens expirados automaticamente (cookies).
+
+## Swagger (testes via API)
+
+Com a aplicação rodando em **Development**, acesse:
+
+```
+https://localhost:7xxx/swagger
+```
+
+### Fluxo no Swagger UI
+
+1. **POST `/api/Auth/login`** com body:
+   ```json
+   { "usuario": "admin", "senha": "admin123" }
+   ```
+2. Copie o `accessToken` da resposta.
+3. Clique em **Authorize** (cadeado) e informe: `Bearer SEU_ACCESS_TOKEN`
+4. Teste **GET `/api/protegido`** e **GET `/api/admin`**
+5. **POST `/api/Auth/refresh`** com `{ "refreshToken": "..." }`
+6. **POST `/api/Auth/logout`** com `{ "refreshToken": "..." }` (requer Authorize)
+
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/api/Auth/login` | — | Login JSON |
+| POST | `/api/Auth/refresh` | — | Renovar tokens |
+| POST | `/api/Auth/logout` | Bearer | Revogar refresh token |
+| GET | `/api/protegido` | Bearer | Área autenticada |
+| GET | `/api/admin` | Bearer + Admin | Painel admin |
 
 ## SQL Server via Docker (alternativa)
 

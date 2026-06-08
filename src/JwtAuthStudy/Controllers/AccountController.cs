@@ -63,7 +63,7 @@ public class AccountController : Controller
             await _authService.LogoutAsync(new LogoutRequest(refreshToken), cancellationToken);
 
         AuthCookieHelper.ClearAuthCookies(Response);
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Login");
     }
 
     [HttpPost]

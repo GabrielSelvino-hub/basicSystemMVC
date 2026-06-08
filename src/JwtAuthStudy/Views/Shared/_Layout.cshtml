@@ -12,16 +12,13 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand fw-semibold" asp-controller="Home" asp-action="Index">JwtAuthStudy</a>
+                <a class="navbar-brand fw-semibold" asp-controller="Protegido" asp-action="Index">JwtAuthStudy</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain"
                         aria-controls="navbarMain" aria-expanded="false" aria-label="Alternar navegação">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse" id="navbarMain">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Início</a>
-                        </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
@@ -34,6 +31,11 @@
                                 </li>
                             }
                         }
+                        <environment include="Development">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/swagger" target="_blank">Swagger</a>
+                            </li>
+                        </environment>
                     </ul>
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)

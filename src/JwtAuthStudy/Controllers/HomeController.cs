@@ -8,7 +8,10 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return View();
+        if (User.Identity?.IsAuthenticated == true)
+            return RedirectToAction("Index", "Protegido");
+
+        return RedirectToAction("Login");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
