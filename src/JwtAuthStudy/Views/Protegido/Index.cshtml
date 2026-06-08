@@ -1,0 +1,36 @@
+@model JwtAuthStudy.Models.ViewModels.ProtegidoViewModel
+@{
+    ViewData["Title"] = "Área Protegida";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-success">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-success">Autenticado</span>
+                    <h1 class="h4 mb-0">Área protegida</h1>
+                </div>
+
+                <p class="text-muted">Acesso autorizado, <strong>@Model.Usuario</strong>!</p>
+
+                <dl class="row mb-4">
+                    <dt class="col-sm-3">Usuário</dt>
+                    <dd class="col-sm-9">@Model.Usuario</dd>
+
+                    <dt class="col-sm-3">E-mail</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3">Role</dt>
+                    <dd class="col-sm-9">
+                        <span class="badge @(Model.Role == "Admin" ? "bg-danger" : "bg-secondary")">@Model.Role</span>
+                    </dd>
+                </dl>
+
+                <p class="small text-muted mb-0">
+                    As informações acima vêm das claims do JWT armazenado no cookie <code>access_token</code>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

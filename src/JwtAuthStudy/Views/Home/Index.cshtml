@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Início";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-4">
+            <h1 class="display-5 fw-bold">JwtAuthStudy</h1>
+            <p class="lead text-muted">
+                Projeto de estudo de autenticação JWT com ASP.NET Core MVC, EF Core e RBAC.
+            </p>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5 card-title">Como funciona</h2>
+                <ol class="mb-0">
+                    <li>Faça login com as credenciais de teste abaixo.</li>
+                    <li>O sistema gera um JWT e armazena em cookies HttpOnly.</li>
+                    <li>Acesse a área <strong>Protegido</strong> (qualquer usuário autenticado).</li>
+                    <li>Acesse <strong>Admin</strong> apenas com a role Admin.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5 card-title">Usuários de teste</h2>
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>Usuário</th>
+                            <th>Senha</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>admin</code></td>
+                            <td><code>admin123</code></td>
+                            <td><span class="badge bg-danger">Admin</span></td>
+                        </tr>
+                        <tr>
+                            <td><code>user</code></td>
+                            <td><code>user123</code></td>
+                            <td><span class="badge bg-secondary">User</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-center">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a class="btn btn-primary" asp-controller="Protegido" asp-action="Index">Ir para área protegida</a>
+            }
+            else
+            {
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Fazer login</a>
+            }
+        </div>
+    </div>
+</div>

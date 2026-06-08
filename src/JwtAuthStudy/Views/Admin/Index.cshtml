@@ -1,0 +1,29 @@
+@model JwtAuthStudy.Models.ViewModels.ProtegidoViewModel
+@{
+    ViewData["Title"] = "Painel Admin";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-danger">Admin</span>
+                    <h1 class="h4 mb-0">Painel administrativo</h1>
+                </div>
+
+                <p class="text-muted">Bem-vindo, <strong>@Model.Usuario</strong>!</p>
+
+                <p>
+                    Esta página exige a role <strong>Admin</strong> via
+                    <code>[Authorize(Roles = "Admin")]</code> no controller.
+                </p>
+
+                <dl class="row mb-0">
+                    <dt class="col-sm-3">E-mail</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
